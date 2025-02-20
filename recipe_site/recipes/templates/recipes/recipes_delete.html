@@ -1,13 +1,11 @@
 {% extends 'main/layout.html' %}
 
-{% block title %}Удаление рецепта{% endblock %}
-
 {% block content %}
-    <div class="features">
-        <h1>Удаление рецепта</h1>
-        <form method="post">
-            {% csrf_token %}<br>
-            <button class="btn btn-success" type="submit">Удалить рецепт</button>
-        </form>
-    </div>
+<h1>Вы уверены, что хотите удалить этот рецепт?</h1>
+<p>{{ recipe.title }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Удалить</button>
+    <a href="{{ recipe.get_absolute_url }}" class="btn btn-secondary">Отменить</a>
+</form>
 {% endblock %}

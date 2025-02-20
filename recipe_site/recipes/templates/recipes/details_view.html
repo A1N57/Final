@@ -5,9 +5,20 @@
 {% block content %}
     <div class="features">
         <h1>{{ recipe.title }}</h1>
-        <p>{{ recipe.date }}</p>
-        <p>{{ recipe.full_text }}</p>
-        <a href="{% url 'recipes-update' recipe.id %}" class="btn btn-info">Редактировать</a>
-        <a href="{% url 'recipes-delete' recipe.id %}" class="btn btn-danger">Удалить</a>
+
+        {% if recipe.image %}
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid">
+        {% endif %}
+
+        <p><strong>Дата публикации:</strong> {{ recipe.date }}</p>
+        <p><strong>Описание:</strong> {{ recipe.description }}</p>
+        <p><strong>Ингредиенты:</strong> {{ recipe.ingredients }}</p>
+        <p><strong>Шаги приготовления:</strong> {{ recipe.steps }}</p>
+        <p><strong>Время приготовления:</strong> {{ recipe.cooking_time }} мин</p>
+
+        {% if recipe and recipe.pk %}
+            <a href="{% url 'recipes-update' pk=recipe.pk %}" class="btn btn-info">Редактировать</a>
+            <a href="{% url 'recipes-delete' pk=recipe.pk %}" class="btn btn-danger">Удалить</a>
+        {% endif %}
     </div>
 {% endblock %}

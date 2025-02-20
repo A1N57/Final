@@ -1,19 +1,25 @@
 {% extends 'main/layout.html' %}
 
-{% block title %}Рецепты на сайте{% endblock %}
-
 {% block content %}
-    <div class="features">
-        <h1>Рецепты на сайте</h1>
-        {% if recipes %}
-            {% for el in recipes %}
-                <div class="alert alert-warning">
-                    <h3>{{ el.title }}</h3>
-                    <a href="{% url 'recipes-detail' el.id %}" class="btn btn-warning">Читать подробнее</a>
-                 </div>
-            {% endfor %}
-        {% else %}
-            <p>У вас нет рецептов!</p>
-        {% endif %}
+<h1>Случайные рецепты</h1>
+<div class="container">
+    <div class="row">
+        {% for recipe in random_recipes %}
+        <div class="col-md-4">
+            <div class="card">
+                {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                {% endif %}
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ recipe.title }}</h5>
+                    <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
+                    <a href="{% url 'recipes-detail' pk=recipe.pk %}" class="btn btn-primary">Подробнее</a>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
+</div>
 {% endblock %}

@@ -1,22 +1,17 @@
+from django.forms import ModelForm, TextInput, Textarea, NumberInput, ClearableFileInput
 from .models import Recipes
-from django.forms import ModelForm, TextInput, DateTimeInput, Textarea
+
 
 class RecipesForm(ModelForm):
     class Meta:
         model = Recipes
-        fields = ['title', 'full_text', 'date']
+        fields = ['title', 'description', 'steps', 'cooking_time', 'ingredients', 'image']
 
         widgets = {
-            "title": TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Название рецепта'
-            }),
-            "full_text": Textarea(attrs={
-                'class': 'form-control',
-                'placeholder': 'Текст рецепта'
-            }),
-            "date": DateTimeInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Дата публикации'
-            }),
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Название рецепта'}),
+            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Описание'}),
+            'steps': Textarea(attrs={'class': 'form-control', 'placeholder': 'Шаги приготовления'}),
+            'cooking_time': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Время приготовления (мин)'}),
+            'ingredients': Textarea(attrs={'class': 'form-control', 'placeholder': 'Ингредиенты'}),
+            'image': ClearableFileInput(attrs={'class': 'form-control'}),
         }
