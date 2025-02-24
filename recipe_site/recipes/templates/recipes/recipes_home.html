@@ -1,24 +1,26 @@
 {% extends 'main/layout.html' %}
 
+{% block title %}Рецепты{% endblock %}
+
 {% block content %}
-<h1>Случайные рецепты</h1>
+<h1 class="recipes-title">Рецепты</h1>
 <div class="container">
     <div class="row">
-        {% for recipe in random_recipes %}
+        {% for recipe in recipes %}
         <div class="col-md-4">
             <div class="card">
                 {% if recipe.image %}
                 <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
                 {% endif %}
                 <div class="card-body">
-
                     <h5 class="card-title">{{ recipe.title }}</h5>
                     <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
                     <a href="{% url 'recipes-detail' pk=recipe.pk %}" class="btn btn-primary">Подробнее</a>
-
                 </div>
             </div>
         </div>
+        {% empty %}
+        <p>Рецептов пока нет.</p>
         {% endfor %}
     </div>
 </div>

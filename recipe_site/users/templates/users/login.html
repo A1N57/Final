@@ -1,0 +1,39 @@
+{% extends "main/layout.html" %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+    <div class="login-container">
+        <h2 class="login-title">Вход</h2>
+
+
+        {% if form.non_field_errors %}
+            <div class="error-message">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error-text">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-submit">Войти</button>
+        </form>
+
+        <a href="{% url 'register' %}" class="register-link">Нет аккаунта? Зарегистрируйтесь</a>
+    </div>
+{% endblock %}
+

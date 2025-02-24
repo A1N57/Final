@@ -4,14 +4,14 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Recipes
 from .forms import RecipesForm
-import random
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib import messages
 
 
 def recipes_home(request):
-    """Главная страница с 5 случайными рецептами"""
-    recipes = Recipes.objects.all()
-    random_recipes = random.sample(list(recipes), min(len(recipes), 5))
-    return render(request, 'recipes/recipes_home.html', {'random_recipes': random_recipes})
+    recipes = Recipes.objects.all().order_by('-date')
+    return render(request, 'recipes/recipes_home.html', {'recipes': recipes})
 
 
 class RecipesDetailView(DetailView):
@@ -44,9 +44,13 @@ class RecipesUpdateView(LoginRequiredMixin, UpdateView):
     form_class = RecipesForm
     template_name = 'recipes/create.html'
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+    def dispatch(self, request, *args, **kwargs):
+        """Ограничиваем доступ к редактированию только автору рецепта"""
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            messages.error(self.request, "Вы не можете редактировать этот рецепт, так как вы не его автор.")
+            return redirect('recipes_home')  # Перенаправляем на страницу списка рецептов
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return self.object.get_absolute_url()
@@ -57,4 +61,12 @@ class RecipesDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipes
     template_name = 'recipes/recipes_delete.html'
     success_url = reverse_lazy('recipes_home')
+
+    def dispatch(self, request, *args, **kwargs):
+        """Ограничиваем доступ к удалению только автору рецепта"""
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            messages.error(self.request, "Вы не можете удалить этот рецепт, так как вы не его автор.")
+            return redirect('recipes_home')  # Перенаправляем на страницу списка рецептов
+        return super().dispatch(request, *args, **kwargs)
 

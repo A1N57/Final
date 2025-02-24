@@ -1,0 +1,39 @@
+{% extends "main/layout.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <div class="login-container">  <!-- Используем те же стили -->
+        <h2 class="login-title">Регистрация</h2>
+
+        {% if form.errors %}
+            <div class="error-message">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p class="error-text">{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="login-form">  <!-- Используем .login-form -->
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error-text">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-submit">Зарегистрироваться</button>
+        </form>
+
+        <a href="{% url 'login' %}" class="register-link">Уже есть аккаунт? Войдите</a>
+    </div>
+{% endblock %}

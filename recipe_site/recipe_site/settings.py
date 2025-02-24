@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'recipes',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -87,4 +88,8 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'home'  # После входа перенаправлять на главную
+LOGOUT_REDIRECT_URL = 'home'
+
 

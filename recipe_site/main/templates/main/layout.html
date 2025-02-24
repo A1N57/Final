@@ -20,9 +20,61 @@
             <a href="{% url 'home' %}"><li><i class="fa-solid fa-house"></i> Главная</li></a>
             <a href="{% url 'recipes_home' %}"><li><i class="fa-regular fa-paper-plane"></i> Рецепты</li></a>
             <a href="{% url 'about' %}"><li><i class="fa-regular fa-address-card"></i> Про нас</li></a>
-            <a href="{% url 'create' %} "><li><button class="btn btn-info"><i class="fas fa-plus-circle"></i> Добавить рецепт</button></li></a>
+             <a href="{% url 'login' %}">
+                <li>
+                    {% if user.is_authenticated %}
+                        <button class="btn btn-info"><i class="fas fa-plus-circle"></i> Добавить рецепт</button>
+                    {% else %}
+                     <button class="btn btn-secondary"><i class="fas fa-sign-in-alt"></i> Войдите, чтобы добавить рецепт</button>
+                    {% endif %}
+                </li>
+            </a>
         </ul>
+        <hr>
+        <div>
+            {% if user.is_authenticated %}
+                <p>Вы вошли как: {{ user.username }}</p>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-primary">Вход</a>
+                <a href="{% url 'register' %}" class="btn btn-success">Регистрация</a>
+            {% endif %}
+        </div>
     </aside>
+
+     <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть">&times;</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".btn-close").forEach(button => {
+                button.addEventListener("click", function() {
+                    this.parentElement.style.display = "none";
+                });
+            });
+        });
+    </script>
+    <script>
+        setTimeout(function() {
+            let alertBox = document.querySelector(".alert");
+            if (alertBox) {
+                alertBox.style.opacity = "0";
+                setTimeout(() => alertBox.style.display = "none", 500);
+            }
+        }, 5000);
+    </script>
+
     <main>
         {% block content %}
         {% endblock %}

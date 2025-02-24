@@ -9,12 +9,13 @@
         {% if recipe.image %}
             <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid">
         {% endif %}
-
+        <p><strong>Автор:</strong> {{ recipe.author.username }}</p>
         <p><strong>Дата публикации:</strong> {{ recipe.date }}</p>
         <p><strong>Описание:</strong> {{ recipe.description }}</p>
         <p><strong>Ингредиенты:</strong> {{ recipe.ingredients }}</p>
         <p><strong>Шаги приготовления:</strong> {{ recipe.steps }}</p>
         <p><strong>Время приготовления:</strong> {{ recipe.cooking_time }} мин</p>
+
 
         {% if recipe and recipe.pk %}
             <a href="{% url 'recipes-update' pk=recipe.pk %}" class="btn btn-info">Редактировать</a>
