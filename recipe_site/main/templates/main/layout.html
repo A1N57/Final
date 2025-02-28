@@ -18,7 +18,7 @@
         <h3>Навигация</h3>
         <ul>
             <a href="{% url 'home' %}"><li><i class="fa-solid fa-house"></i> Главная</li></a>
-            <a href="{% url 'recipes_home' %}"><li><i class="fa-regular fa-paper-plane"></i> Рецепты</li></a>
+            <a href="{% url 'recipes_home' %}"><li><i class="fa-solid fa-book-skull"></i> Рецепты</li></a>
             <a href="{% url 'about' %}"><li><i class="fa-regular fa-address-card"></i> Про нас</li></a>
             <li>
                 {% if user.is_authenticated %}
